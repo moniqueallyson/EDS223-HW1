@@ -12,6 +12,7 @@ The homework assignment focuses on the environmental injustice the Oahu populati
 
 The **folders** are organized as the following:
 
+```
 EDS223-HWK1 
 ├── data
 │   └── ejscreen
@@ -19,6 +20,7 @@ EDS223-HWK1
 ├── ej_screen.qmd
 ├── ej_screen.pdf
 └── README.md
+```
 
 Inside the **data** folder, there is a folder titled **ejscreen** that houses all necessary codes to replicate a map for any of the states in the U.S utilizing the data from this dataset. Inside that folder, there is a **EJScreen technical documentation** that describes the datasheet with detailed information on how it is structured regarding the data, as in what each column signifies and how it was calculated as well as where the data was sourced from. Then there is a **.xlsx** file that is the main dataframe.
 
