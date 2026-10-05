@@ -1,7 +1,7 @@
 # EDS223 Homework Assignmnet 1: Map making practice
 
 <p align="center">
-  <img src="image/image.png" alt="Map making" width="300">
+  <img src="image/image.png" alt="Map making" width="600">
 </p>
 
 This repository contains materials for completing the [first assignment](https://eds-223-geospatial.github.io/assignments/HW1.html) for [EDS 223: Geospatial Analysis and Remote Sensing](https://eds-223-geospatial.github.io/). 
