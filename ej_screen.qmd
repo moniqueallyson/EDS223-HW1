@@ -10,12 +10,14 @@ execute:
 format: pdf
 ---
 
-# Air Quality and Cancer risk in Oahu, Hawaii via EJScreen Tool
+# Air Quality in Oahu, Hawaii via EJScreen Tool
 
-The two maps were created to focus on the environmental injustice for those living on the island of Oahu in Hawaii that may face a higher risk of cancer from toxic chemicals in the air. The first map displays the percentage of high risk of cancer, as listed by the EPA's Toxics Release Inventory (TRI) Program, which is mostly concentrated at the bottom of Oahu. In the EJScreen technical documentaion (2023), the term "cancer" is defined as the "lifetime cancer risk from inhalation of toxics". The second map focuses on the toxicity concentration from the RSEI model that was found in the air. The raw values are lard ranging from  0 to 4,512,172.1, with Oahu having the max at 4,512. Thus, map 1 shows the percentile of high risk areas in danger of cancer from toxic chemicals, which was calculated by persons per million over a 70-year lifetime", with the max in Oahu being 50 per million. In simpler terms, there would be an estimated 50 additional cancer cases per million over a 70-year lifetime according to EPA. For map 2, percentiles are used, " with a median at the 50th percentile, which
-corresponds to the raw value of 603.032"(EJScreen, 2023). In the case for Oahu, the highest percentile roughly 78th percentile or a raw value at 1,078.
+The two maps created focus on air quality and environmental injustice in Oahu, Hawaii, specifically, in the lower regions where there are larger tourist attractions and infrastructures. Though, Hawaii has a long history of environmental injustice due to many factors outside this scope, the two maps created below show the air quality in a heavily popualted area and a higher risk of air cancer, despite Hawaii having clean air overall.
 
-The burden of those living near the areas with high risk of cancer may impact those who face poverty, which could be further mapped to show those living in the vicinity with the highest percetange faciing high risk of cancer. Lastly, it's important to note that map 1 and map 2 have a strong correlation with the location of two major infrastructures on the island that pollute the island. These two are the Daniel K. Inouye International Airport and Par Hawaii Refining,an energy plant, that had a recent settlement in 2022 due to Clean Air Violations with the EPA. These two areas are also major tourist attractions, with a strip of hotels and multiple shopping areas increasing the amount of anthropogenic pollution emitted on the island.
+The first map displays the percentage of lifetime risk of cancer, as listed by the EPA's Toxics Release Inventory (TRI) Program, which is mostly concentrated at the bottom of Oahu, as mentioned above. In the EJScreen technical documentaion (2023), the term "cancer" in the dataset is defined as the "lifetime cancer risk from inhalation of toxics". The second map focuses on the toxicity concentration from the RSEI model that was found in the air. The raw values range from  0 to 4,512,172.1, with Oahu having the max at 4,512. Thus, map 1 shows the percentile of high risk areas in danger of cancer from toxic chemicals, which was calculated by persons per million over a 70-year lifetime, with the max in Oahu being 50 per million. In simpler terms, there would be an estimated 50 additional cancer cases per million over a 70-year lifetime according to EPA. For map 2, percentiles are used, " with a median at the 50th percentile, which
+corresponds to the raw value of 603.032"(EJScreen, 2023). In the case for Oahu, the highest percentile is roughly at the 78th percentile or a raw value at 1,078.
+
+Those living or working near these areas are the ones consistenly breathing the air, which puts them in the risk of inhaling toxic chemicals and/or devoloping air cancer. This can impact those who face poverty, and have no means to relocate or choose a different area for work. This can be further explored by creating a map with "low income" to show those living in the vicinity. Lastly, it's important to note that map 1 and map 2 have a strong correlation with the location of two major infrastructures, besides the tourist attraactions, on the lower region of the island near Honolulu. These two are the Daniel K. Inouye International Airport and Par Hawaii Refining, an energy plant, that had a recent settlement in 2022 due to Clean Air Violations with the EPA. As mentioned, these two areas are also major tourist attractions, with a strip of hotels and multiple shopping areas that can be the cause of increased amount of anthropogenic pollution emitted on the island of Oahu.
 
 ## Load packages
 ```{r}
@@ -64,7 +66,7 @@ hawaii_counties <- hawaii_counties |>
 ```
 
 
-## Map 1: Percentage of Lifetime Risk of Cancer from Toxic Air
+## Map 1: Percentage of Lifetime Risk of Cancer from Inhaling Toxic Air
 ```{r}
 # Select primary spatial object as county of choice
 m1 <- tm_shape(honolulu,
@@ -86,7 +88,7 @@ bbox = c(-158.3042, 21.2367, -157.6251, 21.7293)) +
     text.size = .4) + 
   tm_title(
       text = "Lifetime Cancer Risk from
-      Toxic Air in Oahu Per Million (EJScreen, 2019)",
+      Toxic Air in Oahu Cases Per Million (EJScreen, 2019)",
       size = 1) + # Add title to map
   tm_layout(scale = 1.2, 
     asp = 0,    # Customize backgrounds
