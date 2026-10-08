@@ -12,15 +12,13 @@ format: pdf
 
 # Air Quality and Cancer risk in Oahu, Hawaii via EJScreen Tool
 
-The two maps created focus on the environmental injustice those living on the island of Oahu in Hawaii face when near the areas that demonstrate high risk of cancer from toxic chemicals in the air as listed by the EPA's Toxics Release Inventory (TRI) Program. There is an extra map focusing on the percentage of those living in an area on the island of Oahu who have been determined to be at poverty-level, which was defined as being less than or equal to twice the federal poverty level. This was done to verify the injustice of those in the near vicinity of the areas with the high risk of air cancer.
+The two maps were created to focus on the environmental injustice for those living on the island of Oahu in Hawaii that may face a higher risk of cancer from toxic chemicals in the air due. The first map displays the percentage of high risk of cancer, as listed by the EPA's Toxics Release Inventory (TRI) Program, which is mostly concentrated at the bottom of Oahu. The second map focuses on the concentration chemicals modeled by the toxicity weight.
 
-Map 1 determines the toxic chemical weight, with the EJscreen having raw values range from 0 to 4,512,172.1, with the highest at 28,117.14.
-Map 2 shows the percentile of high risk areas in danger of cancer from toxic chemicals, which was calculated by persons per million over a 70-year lifetime with the max being 50 of a raw value.
-Map 3 displays the percentage of those who are considered to be equal to or less than the Federal poverty level.
+Map 1 determines the toxic chemical weight, with the EJscreen having raw values range from 0 to 4,512,172.1, with the highest at 28,117.14. Map 2 shows the percentile of high risk areas in danger of cancer from toxic chemicals, which was calculated by persons per million over a 70-year lifetime with the max being 50 of a raw value.
 
-The burden of those living near the areas with high risk of cancer may impact those who face poverty at an unequal advantage, due to the fact that some may be able to afford air purifiers or the ability to relocate. Lastly, map 1 and map 2 have a strong correlation with the location of two major infrastructures on the island, Daniel K. Inouye International Airport and Par Hawaii Refining,an energy plant, that had a recent settlement in 2022 due to Clean Air Violations with the EPA. 
+The burden of those living near the areas with high risk of cancer may impact those who face poverty, which could be further mapped to show those living in the vicinity with the highest percetange faciing high risk of cancer. Lastly, it's important to note that map 1 and map 2 have a strong correlation with the location of two major infrastructures on the island that pollute the island. These two are the Daniel K. Inouye International Airport and Par Hawaii Refining,an energy plant, that had a recent settlement in 2022 due to Clean Air Violations with the EPA. These two areas are also major tourist attractions, with a strip of hotels and multiple shopping areas increasing the amount of anthropogenic pollution emitted on the island.
 
-## Read EJScreen Data
+## Load packages
 ```{r}
 library(tidyverse) # For R
 library(sf) # Read vector 
@@ -28,7 +26,11 @@ library(here) # Locate files
 library(stars)
 library(tmap) # For static and interactive maps
 library(janitor) # Clean data
+``` 
 
+
+## Read EJScreen and Data
+```{r}
 # read in geodatabase of EJScreen data at the Census Block Group level
 ejscreen <- sf::st_read(here::here("data",
 "ejscreen","EJSCREEN_2023_BG_StatePct_with_AS_CNMI_GU_VI.gdb"),
@@ -44,123 +46,88 @@ honolulu <- ejscreen |>
 
 # find the average values for all variables within counties
 hawaii_counties <- aggregate(hawaii,
-by = list(hawaii$CNTY_NAME),
-FUN = mean)
+by = list(hawaii$CNTY_NAME), FUN = mean)
 
 ```
 
 ## Data Cleaning
 ```{r}
-# Convert columns to lower case
-
+# Convert all columns to lower case
 hawaii <- hawaii |>
   clean_names()
 
 honolulu <- honolulu |>
-  clean_names() |>
-  # Convert decimals to whole numbers
-  mutate(honolulu, lipct = lowincpct * 100)
+  clean_names()
 
 hawaii_counties <- hawaii_counties |>
   clean_names()
+
 ```
 
+
+## Map 1: Percentage of Lifetime Risk of Cancer from Toxic Air
 ```{r}
-# Summarize columns of choice
-summary(hawaii$rsei_air)
-summary(hawaii$p_d2_cancer)
-```
-
-## Map 1: Toxic Air Pollution 
-```{r}
-# Remove missing values
-honolulu$rsei_air[is.na(honolulu$rsei_air)] <- 0
-
-tmap_mode("plot")
-tm1 <- tm_shape(honolulu,
-bbox = c(-158.580780,21.183131,-157.409363,21.7754421)) +
-    tm_polygons(fill = "rsei_air",
-    fill.legend = tm_legend(
-      title = "Toxic Releases to Air",
-      orientation = "landscape", 
-      width = 60),
-      fill.scale = tm_scale_continuous(
-        values = "scico.broc", midpoint = 30)) +
-    tm_compass(
-      type = "rose",
-      size = 2,
-      position = c("right", "top")) +
-    tm_scalebar(position = c("left", "bottom")) +
-    tm_title(text = "Toxic Air Pollution") + 
-    tm_layout(style= "natural",
-            bg.color = "skyblue",
-            frame = TRUE, outer.bg.color = "beige") +
-    tm_credits("Data source: EPA RSEI Model",
-    fontface = "italic",
-    position = c("left", "top")) +
-    tm_logo("image/epa.png", height=1,
-    position = tm_pos_in(pos.h = 0.7, pos.v = 0.7))
-tm1
-```
-
-## Map 2: Percentile of Lifetime Risk of Cancer from Toxic Air
-```{r}
-# Remove missing values
-honolulu$p_d2_cancer[is.na(honolulu$p_d2_cancer)] <- 0
-
 # Select primary spatial object as county of choice
-tm2 <- tm_shape(honolulu,
-bbox = c(-158.580780,21.183131,-157.409363,21.7754421)) +
-    # Map percentile of cancer and create legend
-    tm_polygons(fill = "p_d2_cancer",
-    fill.legend = tm_legend(title = "Percentile",
-    position = c("left", "center"),
+m1 <- tm_shape(honolulu,
+bbox = c(-158.3042, 21.2367, -157.6251, 21.7293)) +
+  tm_graticules() +
+  tm_polygons(fill = "cancer", # Map percentile of air cancer
+    fill.legend = tm_legend(title = "Percentage %", # Create legend
     bg.color = "skyblue",
-    width = 6)) +
-    # Customize compass and position
-    tm_compass(
-      type = "rose",
-      size = 2,
-      position = c("right", "top")) +
-    tm_scalebar(position = c("left", "bottom")) +
-    # Add title to map
-    tm_title(text = "Lifetime Cancer Risk from Toxic Air") + 
-    # Customize color of backgrounds
-    tm_layout(style= "beaver",
-            bg.color = "skyblue", outer.bg.color = "beige") +
-    # Add Source
-    tm_credits("Data source:  2019 EPA’s OAQPS",
-    fontface = "italic", position = c("left", "top")) +
-    # Add logo
-    tm_logo("image/epa.png", height=1,
-    position = tm_pos_in(pos.h = 0.7, pos.v = 0.7))
-tm2
+    width = 8),
+    fill.scale = tm_scale_intervals(
+      values = c("green", "yellow", "red"),
+      value.na = "skyblue")) +
+  tm_compass( # Customize compass
+    type = "rose",
+    size = 3,
+    position = c(
+      "right", "top")) +
+  tm_scalebar(position = c("left", "bottom")) + 
+  tm_title(
+      text = "Percentage of Lifetime Cancer Risk from Toxic Air in Oahu",
+      size = 1) + # Add title to map
+  tm_layout(scale = 1.2, 
+    asp = 0,    # Customize backgrounds
+    style= "beaver",
+    bg.color = "skyblue",
+    outer.bg.color = "lightyellow") +
+  tm_credits("Data source: OAQPS (2019)",
+    fontface = "italic",
+    position = c("left", "top"), size = .5) +
+  tm_logo("image/epa.png", height=1,
+    position = c("right", "bottom"))
+m1
 ```
 
-## Map 3: Population Status Determined at Poverty-level
+## Map 2: Toxic Air Chemicals 
 
 ```{r}
-tm3 <- tm_shape(honolulu,
-bbox = c(-158.580780,21.183131,-157.409363,21.7754421)) +
-    tm_polygons(fill = "lipct",
-    fill.legend = tm_legend(title = "Percentage",
-    position = c("left", "center"),
+m2 <- tm_shape(honolulu,
+bbox = c(-158.3042, 21.2367, -157.6251, 21.7293)) +
+  tm_graticules() +
+  tm_polygons(fill = "rsei_air",
+    fill.legend = tm_legend(title = "Concentration",
     bg.color = "skyblue",
-    width = 6)) +
-    tm_compass(
+    width = 8),
+    fill.scale = tm_scale_intervals(
+      values = c("green", "yellow", "red"),
+      value.na = "skyblue")) +
+  tm_compass(
     type = "rose",
     size = 2,
     position = c("right", "top")) +
-    tm_scalebar(position = c("left", "bottom")) +
-    tm_title(text = "Low Income Population") + 
-    tm_layout(style = "beaver",
-            bg.color = "skyblue",
-            outer.bg.color = "beige") +
-    tm_credits("Data source: EjScreen",
+  tm_scalebar(position = c("left", "bottom")) +
+  tm_title(text = "Concentration of Toxic Chemicals in Oahu",
+    size  = 1) + 
+  tm_layout(scale= 1.2,
+    asp = 0,
+    style = "beaver",
+    bg.color = "skyblue",
+    outer.bg.color = "lightyellow") +
+  tm_credits("Data source: EjScreen (2019)",
     fontface = "italic", position = c("left", "top")) +
-    tm_logo("image/epa.png", height=1,
-    position = tm_pos_in(pos.h = 0.7, pos.v = 0.7))
-    # tm_minimap(server = NA, toggle = TRUE, position = c("left", "bottom"))
-tm3
+  tm_logo("image/epa.png", height=1,
+    position = c("right", "bottom"))
+m2
 ```
-
