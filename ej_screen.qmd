@@ -71,16 +71,15 @@ hawaii_counties <- hawaii_counties |>
 # Select primary spatial object as county of choice
 m1 <- tm_shape(honolulu,
 bbox = c(-158.3042, 21.2367, -157.6251, 21.7293)) +
-  tm_graticules() +
   tm_polygons(fill = "cancer", # Map percentile of air cancer
     fill.legend = tm_legend(title = "Per Million", # Create legend
-    bg.color = "skyblue",
+    bg.color = "white",
     width = 8),
     fill.scale = tm_scale_intervals(
       values = c("green", "yellow", "red"),
-      value.na = "skyblue")) +
+      value.na = "white")) +
   tm_compass( # Customize compass
-    type = "rose",
+    type = "8star",
     size = 1.5,
     position = c(
       "right", "top")) +
@@ -93,8 +92,7 @@ bbox = c(-158.3042, 21.2367, -157.6251, 21.7293)) +
   tm_layout(scale = 1.2, 
     asp = 0,    # Customize backgrounds
     style= "beaver",
-    bg.color = "skyblue",
-    outer.bg.color = "lightyellow")
+    bg.color = "white")
 m1
 ```
 
@@ -103,16 +101,15 @@ m1
 ```{r}
 m2 <- tm_shape(honolulu,
 bbox = c(-158.3042, 21.2367, -157.6251, 21.7293)) +
-  tm_graticules() +
   tm_polygons(fill = "p_rsei_air",
     fill.legend = tm_legend(title = "Percentile",
-    bg.color = "skyblue",
+    bg.color = "white",
     width = 8),
     fill.scale = tm_scale_intervals(
       values = c("green", "yellow", "red"),
-      value.na = "skyblue")) +
+      value.na = "white")) +
   tm_compass(
-    type = "rose",
+    type = "8star",
     size = 1.5,
     position = c("right", "top")) +
   tm_scalebar(position = c("left", "top"),
@@ -122,7 +119,6 @@ bbox = c(-158.3042, 21.2367, -157.6251, 21.7293)) +
   tm_layout(scale= 1.2,
     asp = 0,
     style = "beaver",
-    bg.color = "skyblue",
-    outer.bg.color = "lightyellow")
+    bg.color = "white")
 m2
 ```
