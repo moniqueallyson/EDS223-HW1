@@ -2,7 +2,7 @@
 title: "EDS 223 Assignment 1"
 subtitle: "Map making practice"
 author: "Monique Hernandez"
-date: 10-7-2026
+date: 10-10-2026
 execute:
   eval: true
   warning: false
@@ -80,14 +80,14 @@ bbox = c(-158.3042, 21.2367, -157.6251, 21.7293)) +
       value.na = "white")) +
   tm_compass( # Customize compass
     type = "8star",
-    size = 1.5,
+    size = 1.5, # Customize compass size
     position = c(
-      "right", "top")) +
+      "right", "top")) + # Change compass position
   tm_scalebar(position = c("left", "top"),
     text.size = .4) + 
   tm_title(
       text = "Lifetime Cancer Risk from
-      Toxic Air in Oahu Cases Per Million (EJScreen, 2019)",
+      Toxic Air in Oahu Cases Per Million (EJScreen, 2023)",
       size = 1) + # Add title to map
   tm_layout(scale = 1.2, 
     asp = 0,    # Customize backgrounds
@@ -101,20 +101,20 @@ m1
 ```{r}
 m2 <- tm_shape(honolulu,
 bbox = c(-158.3042, 21.2367, -157.6251, 21.7293)) +
-  tm_polygons(fill = "p_rsei_air",
+  tm_polygons(fill = "p_rsei_air", # Choose RSEI values
     fill.legend = tm_legend(title = "Percentile",
-    bg.color = "white",
+    bg.color = "white", # Choose background color
     width = 8),
     fill.scale = tm_scale_intervals(
       values = c("green", "yellow", "red"),
       value.na = "white")) +
   tm_compass(
-    type = "8star",
+    type = "8star", # Customize compass
     size = 1.5,
     position = c("right", "top")) +
   tm_scalebar(position = c("left", "top"),
     text.size = .4) +
-  tm_title(text = "Percentile of Toxic Chemicals in Oahu (EJScreen 2019)",
+  tm_title(text = "Percentile of Toxic Chemicals in Oahu (EJScreen, 2023)",
     size  = 1) + 
   tm_layout(scale= 1.2,
     asp = 0,
